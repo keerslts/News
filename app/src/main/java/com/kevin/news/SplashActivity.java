@@ -1,5 +1,6 @@
 package com.kevin.news;
 
+import android.app.Activity;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.animation.AlphaAnimation;
@@ -7,13 +8,19 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.RotateAnimation;
 import android.view.animation.ScaleAnimation;
+import android.widget.RelativeLayout;
 
-public class SplashActivity extends AppCompatActivity {
+public class SplashActivity extends Activity {
+
+    private RelativeLayout relativeSplash;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.SplashActivity);
+        setContentView(R.layout.activity_splash);
+
+        relativeSplash = (RelativeLayout)findViewById(R.id.splashRelative);
+
 
         startAnim();
     }
@@ -48,5 +55,7 @@ public class SplashActivity extends AppCompatActivity {
         set.addAnimation(rotateAnimation);
         set.addAnimation(scaleAnimation);
         set.addAnimation(alphaAnimation);
+
+        relativeSplash.startAnimation(set);
     }
 }
