@@ -1,6 +1,7 @@
-package com.kevin.news;
+package com.kevin.news.activity;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.animation.AlphaAnimation;
@@ -9,6 +10,8 @@ import android.view.animation.AnimationSet;
 import android.view.animation.RotateAnimation;
 import android.view.animation.ScaleAnimation;
 import android.widget.RelativeLayout;
+
+import com.kevin.news.R;
 
 public class SplashActivity extends Activity {
 
@@ -55,6 +58,25 @@ public class SplashActivity extends Activity {
         set.addAnimation(rotateAnimation);
         set.addAnimation(scaleAnimation);
         set.addAnimation(alphaAnimation);
+
+        set.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+
+                Intent intent = new Intent(SplashActivity.this,GuideActivity.class);
+                startActivity(intent);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
 
         relativeSplash.startAnimation(set);
     }
