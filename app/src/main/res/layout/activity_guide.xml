@@ -20,5 +20,7 @@
         android:layout_marginBottom="60dp"
         android:padding="5dp"
         android:text="开始体验"
+        android:background="@drawable/btn_guide_selector"
+        android:textColor="@drawable/btn_guide_text_seletor"
         />
 </RelativeLayout>
