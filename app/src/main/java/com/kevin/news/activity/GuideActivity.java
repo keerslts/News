@@ -52,12 +52,12 @@ public class GuideActivity extends Activity {
 
         @Override
         public int getCount() {
-            return 0;
+            return mImageIds.length;
         }
 
         @Override
         public boolean isViewFromObject(View view, Object object) {
-            return false;
+            return view == object;
         }
 
         @Override
@@ -68,7 +68,7 @@ public class GuideActivity extends Activity {
 
         @Override
         public void destroyItem(ViewGroup container, int position, Object object) {
-            super.destroyItem(container, position, object);
+            container.removeView((View) object);
         }
     }
 }
