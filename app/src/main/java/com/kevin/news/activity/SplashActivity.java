@@ -22,7 +22,7 @@ public class SplashActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
-        relativeSplash = (RelativeLayout)findViewById(R.id.splashRelative);
+        relativeSplash = (RelativeLayout) findViewById(R.id.splashRelative);
 
 
         startAnim();
@@ -35,7 +35,7 @@ public class SplashActivity extends Activity {
     private void startAnim() {
 
         //把两个效果合在一起
-        AnimationSet set = new AnimationSet(false);
+        AnimationSet set = new AnimationSet(true);
 
         RotateAnimation rotateAnimation = new RotateAnimation(0, 360,
                 Animation.RELATIVE_TO_SELF, 0.5f,
@@ -47,12 +47,13 @@ public class SplashActivity extends Activity {
 
 
         ScaleAnimation scaleAnimation = new ScaleAnimation(0, 1, 0, 1,
-                Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
-        scaleAnimation.setDuration(2000);
+                Animation.RELATIVE_TO_SELF, 0.5f, Animation.
+                RELATIVE_TO_SELF, 0.5f);
+        scaleAnimation.setDuration(2500);
         scaleAnimation.setFillAfter(true);
 
-        AlphaAnimation alphaAnimation = new AlphaAnimation(0,1);
-        alphaAnimation.setDuration(2000);
+        AlphaAnimation alphaAnimation = new AlphaAnimation(0, 1);
+        alphaAnimation.setDuration(3000);
         alphaAnimation.setFillAfter(true);
 
         set.addAnimation(rotateAnimation);
@@ -68,8 +69,9 @@ public class SplashActivity extends Activity {
             @Override
             public void onAnimationEnd(Animation animation) {
 
-                Intent intent = new Intent(SplashActivity.this,GuideActivity.class);
+                Intent intent = new Intent(SplashActivity.this, GuideActivity.class);
                 startActivity(intent);
+                finish();
             }
 
             @Override
