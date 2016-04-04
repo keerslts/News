@@ -1,6 +1,7 @@
 package com.kevin.news.activity;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -9,11 +10,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.Window;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.kevin.news.R;
+import com.kevin.news.utils.PrefUtils;
 
 import java.util.ArrayList;
 
@@ -29,6 +32,7 @@ public class GuideActivity extends Activity {
     private LinearLayout linearPointGroup;
     private View viewRedPoint;
     private int redPointWeith;
+    private Button btn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +42,7 @@ public class GuideActivity extends Activity {
         viewPager = (ViewPager) findViewById(R.id.vp_guide);
         linearPointGroup = (LinearLayout) findViewById(R.id.linear_point_group);
         viewRedPoint = (View) findViewById(R.id.view_red_point);
+        btn = (Button) findViewById(R.id.btn_start);
 
         initViews();
         viewPager.setAdapter(new GuideAdapter());
@@ -86,6 +91,13 @@ public class GuideActivity extends Activity {
 
     }
 
+    public void startnow(View view) {
+        PrefUtils.setBloolen(GuideActivity.this,
+                "is_user_guide_showed", true);
+        startActivity(new Intent(GuideActivity.this, MainActivity.class));
+        finish();
+    }
+
 
     class GuideAdapter extends PagerAdapter {
 
@@ -117,7 +129,7 @@ public class GuideActivity extends Activity {
         @Override
         public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
-            int len = (int)(positionOffset * redPointWeith) + position * redPointWeith;
+            int len = (int) (positionOffset * redPointWeith) + position * redPointWeith;
             RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams)
                     viewRedPoint.getLayoutParams();
             params.leftMargin = len;
@@ -127,6 +139,11 @@ public class GuideActivity extends Activity {
         @Override
         public void onPageSelected(int position) {
 
+            if (position == mImageIds.length - 1) {
+                btn.setVisibility(View.VISIBLE);
+            } else {
+                btn.setVisibility(View.INVISIBLE);
+            }
         }
 
         @Override

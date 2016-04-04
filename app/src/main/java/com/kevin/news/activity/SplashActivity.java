@@ -12,6 +12,7 @@ import android.view.animation.ScaleAnimation;
 import android.widget.RelativeLayout;
 
 import com.kevin.news.R;
+import com.kevin.news.utils.PrefUtils;
 
 public class SplashActivity extends Activity {
 
@@ -68,10 +69,7 @@ public class SplashActivity extends Activity {
 
             @Override
             public void onAnimationEnd(Animation animation) {
-
-                Intent intent = new Intent(SplashActivity.this, GuideActivity.class);
-                startActivity(intent);
-                finish();
+                jumpGuidePage();
             }
 
             @Override
@@ -81,5 +79,16 @@ public class SplashActivity extends Activity {
         });
 
         relativeSplash.startAnimation(set);
+    }
+
+    private void jumpGuidePage(){
+        boolean userGuide = PrefUtils.getBoolen(this,"is_user_guide_showed",false);
+        if(!userGuide) {
+            startActivity(new Intent(SplashActivity.this, GuideActivity.class));
+        }else{
+            startActivity(new Intent(SplashActivity.this, MainActivity.class));
+        }
+
+        finish();
     }
 }
