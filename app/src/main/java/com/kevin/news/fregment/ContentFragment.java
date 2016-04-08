@@ -1,5 +1,7 @@
 package com.kevin.news.fregment;
 
+
+
 import android.view.View;
 
 import com.kevin.news.R;
