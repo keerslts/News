@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <android.support.v4.view.ViewPager
+    <com.kevin.news.view.NoScrollViewPager
         android:id="@+id/vp_content"
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -42,7 +42,7 @@
             android:text="政务"
             />
         <RadioButton
-            android:id="@+id/rv_setting"
+            android:id="@+id/rb_setting"
             style="@style/BottomTabStyle"
             android:drawableTop="@drawable/btn_tab_setting_selector"
             android:text="设置"

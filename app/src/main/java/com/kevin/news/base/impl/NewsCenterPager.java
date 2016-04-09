@@ -20,7 +20,7 @@ public class NewsCenterPager extends BasePager {
     @Override
     public void initData() {
         tvTitle.setText("新闻");
-
+        setSlidingMenuEnable(true);
 
 
         TextView textView = new TextView(mActivity);

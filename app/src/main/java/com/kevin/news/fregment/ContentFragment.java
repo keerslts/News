@@ -55,6 +55,49 @@ public class ContentFragment extends BaseFragment {
         myPagerList.add(new SettingPager(myActivity));
 
         myViewPager.setAdapter(new ContentAdapter());
+
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                switch (checkedId) {
+                    case R.id.rb_home:
+                        myViewPager.setCurrentItem(0, false);
+                        break;
+                    case R.id.rb_news:
+                        myViewPager.setCurrentItem(1, false);
+                        break;
+                    case R.id.rb_smart:
+                        myViewPager.setCurrentItem(2, false);
+                        break;
+                    case R.id.rb_gov:
+                        myViewPager.setCurrentItem(3, false);
+                        break;
+                    case R.id.rb_setting:
+                        myViewPager.setCurrentItem(4, false);
+                        break;
+                    default:
+                        break;
+                }
+            }
+        });
+        myViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                myPagerList.get(position).initData();
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+
+        myPagerList.get(0).initData();
     }
 
     class ContentAdapter extends PagerAdapter {
@@ -73,7 +116,7 @@ public class ContentFragment extends BaseFragment {
         public Object instantiateItem(ViewGroup container, int position) {
             BasePager pager = myPagerList.get(position);
             container.addView(pager.myRootView);
-            pager.initData();
+          //  pager.initData();  会加载下一个view
             return pager.myRootView;
         }
 

@@ -6,7 +6,9 @@ import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.kevin.news.R;
+import com.kevin.news.activity.MainActivity;
 
 /**
  * Created by Kevin on 2016/4/8.
@@ -28,19 +30,32 @@ public class BasePager {
 
     public void initViews() {
 
-        myRootView = View.inflate(mActivity, R.layout.base_paper,null);
+        myRootView = View.inflate(mActivity, R.layout.base_paper, null);
 
         tvTitle = (TextView) myRootView.findViewById(R.id.tv_title);
         flContent = (FrameLayout) myRootView.findViewById(R.id.fl_content);
         btnMenu = (ImageButton) myRootView.findViewById(R.id.btn_menu);
-
-
-
-
     }
 
     public void initData() {
 
+    }
+
+    /**
+     * 设置侧边栏是否可滑动
+     *
+     * @param enable
+     */
+    public void setSlidingMenuEnable(boolean enable) {
+
+        MainActivity mainUi = (MainActivity) mActivity;
+        SlidingMenu slidingMenu = mainUi.getSlidingMenu();
+
+        if (enable) {
+            slidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
+        } else {
+            slidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_NONE);
+        }
     }
 }
 
