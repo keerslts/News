@@ -2,10 +2,12 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#a58">
-<TextView
+    android:background="#000">
+<ListView
+    android:id="@+id/lv_list"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:text="我是侧边栏啦"
-    android:textSize="33sp"/>
+    android:listSelector="@android:color/transparent"
+    android:divider="@android:color/transparent"
+    android:layout_marginTop="40dp"/>
 </LinearLayout>
