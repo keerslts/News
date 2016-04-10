@@ -56,7 +56,7 @@ public class NewsCenterPager extends BasePager {
                 new RequestCallBack<String>() {
                     @Override
                     public void onSuccess(ResponseInfo<String> responseInfo) {
-                        String result = (String) responseInfo.result;
+                        String result = responseInfo.result;
                         Log.i("kevin", "返回结果: " + result);
 
                         parseData(result);

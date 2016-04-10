@@ -3,6 +3,7 @@ package com.kevin.news.fregment;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -15,7 +16,6 @@ import com.lidroid.xutils.view.annotation.ViewInject;
 
 import java.util.ArrayList;
 
-
 /**
  * Created by Kevin on 2016/4/6.
  */
@@ -25,6 +25,7 @@ public class LeftMenuFragment extends BaseFragment {
     private ListView lvList;
     private ArrayList<NewsMenuData> myMenuList;
     private MenuAdapter menuAdapter;
+    private int myCurrentPositon;
 
     @Override
     public View initViews() {
@@ -33,16 +34,28 @@ public class LeftMenuFragment extends BaseFragment {
         return view;
     }
 
+    @Override
+    public void initData() {
+        lvList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                myCurrentPositon = position;
+                menuAdapter.notifyDataSetChanged();
+            }
+        });
+    }
+
     /**
      * 设置网络数据
+     *
      * @param newsData
      */
     public void setMenuData(NewsData newsData) {
 
-        Log.i("kevin", "LeftMenuFragment:拿到Gson数据 " + newsData);
-//        myMenuList = newsData.data;
-//        menuAdapter = new MenuAdapter();
-//        lvList.setAdapter(menuAdapter);
+       // Log.i("kevin", "LeftMenuFragment:拿到Gson数据 " + newsData);
+        myMenuList = newsData.data;
+        menuAdapter = new MenuAdapter();
+        lvList.setAdapter(menuAdapter);
 
     }
 
@@ -54,7 +67,7 @@ public class LeftMenuFragment extends BaseFragment {
         }
 
         @Override
-        public Object getItem(int position) {
+        public NewsMenuData getItem(int position) {
             return myMenuList.get(position);
         }
 
@@ -66,10 +79,15 @@ public class LeftMenuFragment extends BaseFragment {
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             View view = View.inflate(myActivity, R.layout.list_menu_item, null);
-            TextView tvTitle = (TextView)view.findViewById(R.id.tv_title);
-            NewsMenuData newsMenuData = (NewsMenuData) getItem(position);
+            TextView tvTitle = (TextView) view.findViewById(R.id.tv_title);
+            NewsMenuData newsMenuData = getItem(position);
             tvTitle.setText(newsMenuData.title);
 
+            if (myCurrentPositon == position) {
+                tvTitle.setEnabled(true);
+            } else {
+                tvTitle.setEnabled(false);
+            }
             return view;
         }
     }
