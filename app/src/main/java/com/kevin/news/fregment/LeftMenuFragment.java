@@ -9,6 +9,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.kevin.news.R;
+import com.kevin.news.activity.MainActivity;
+import com.kevin.news.base.impl.NewsCenterPager;
 import com.kevin.news.bean.NewsData;
 import com.kevin.news.bean.NewsData.NewsMenuData;
 import com.lidroid.xutils.ViewUtils;
@@ -41,8 +43,17 @@ public class LeftMenuFragment extends BaseFragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 myCurrentPositon = position;
                 menuAdapter.notifyDataSetChanged();
+                setCurrentMenuDetailPager(position);
             }
         });
+    }
+
+    private void setCurrentMenuDetailPager(int position) {
+        MainActivity mainUI = (MainActivity) myActivity;
+        ContentFragment fragment = mainUI.getContentFragment();
+        NewsCenterPager pager = fragment.getNewsCenterPager();
+        pager.setCurrentMenuDetailPager(position);
+
     }
 
     /**

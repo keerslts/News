@@ -116,7 +116,7 @@ public class ContentFragment extends BaseFragment {
         public Object instantiateItem(ViewGroup container, int position) {
             BasePager pager = myPagerList.get(position);
             container.addView(pager.myRootView);
-          //  pager.initData();  会加载下一个view
+            //  pager.initData();  会加载下一个view
             return pager.myRootView;
         }
 
@@ -124,5 +124,9 @@ public class ContentFragment extends BaseFragment {
         public void destroyItem(ViewGroup container, int position, Object object) {
             container.removeView((View) object);
         }
+    }
+
+    public NewsCenterPager getNewsCenterPager() {
+        return (NewsCenterPager)myPagerList.get(1);
     }
 }

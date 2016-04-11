@@ -40,9 +40,9 @@ public class MainActivity extends SlidingFragmentActivity {
         FragmentTransaction fragmentTransaction = fm.beginTransaction();
 
         fragmentTransaction.replace(R.id.activity_main,
-                new ContentFragment(), FRAGMENT_LEFT_MENU);
+                new ContentFragment(), FRAGMENT_CONTENT);
         fragmentTransaction.replace(R.id.left_menu,
-                new LeftMenuFragment(), FRAGMENT_CONTENT);
+                new LeftMenuFragment(), FRAGMENT_LEFT_MENU);
         fragmentTransaction.commit();
 
     }
@@ -50,7 +50,14 @@ public class MainActivity extends SlidingFragmentActivity {
     public LeftMenuFragment getLeftMenuFragment() {
         FragmentManager fragmentManager = getSupportFragmentManager();
         LeftMenuFragment leftMenuFragment = (LeftMenuFragment)
-                fragmentManager.findFragmentByTag(FRAGMENT_CONTENT);
+                fragmentManager.findFragmentByTag(FRAGMENT_LEFT_MENU);
         return leftMenuFragment;
+    }
+
+    public ContentFragment getContentFragment() {
+        FragmentManager fm = getSupportFragmentManager();
+        ContentFragment fragment = (ContentFragment) fm.
+                findFragmentByTag(FRAGMENT_CONTENT);
+        return fragment;
     }
 }

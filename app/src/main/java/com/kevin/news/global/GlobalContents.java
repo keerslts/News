@@ -5,6 +5,6 @@ package com.kevin.news.global;
  */
 public class GlobalContents {
 
-    public static final String SERVER_URL = "http://keerslts.imwork.net/zhbj";
+    public static final String SERVER_URL = "http://kevinlong.cn/zhbj";
     public static final String CATEGORIES_URL = SERVER_URL + "/categories.json";// 获取分类信息的接口
 }
