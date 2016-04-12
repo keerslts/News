@@ -35,6 +35,18 @@ public class BasePager {
         tvTitle = (TextView) myRootView.findViewById(R.id.tv_title);
         flContent = (FrameLayout) myRootView.findViewById(R.id.fl_content);
         btnMenu = (ImageButton) myRootView.findViewById(R.id.btn_menu);
+        btnMenu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toggleSlidingMenu();
+            }
+        });
+    }
+
+    private void toggleSlidingMenu() {
+        MainActivity mainUI = (MainActivity)mActivity;
+        SlidingMenu slidingMenu = mainUI.getSlidingMenu();
+        slidingMenu.toggle();
     }
 
     public void initData() {

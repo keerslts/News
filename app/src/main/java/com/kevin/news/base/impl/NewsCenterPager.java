@@ -1,10 +1,7 @@
 package com.kevin.news.base.impl;
 
 import android.app.Activity;
-import android.graphics.Color;
 import android.util.Log;
-import android.view.Gravity;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -44,13 +41,13 @@ public class NewsCenterPager extends BasePager {
         setSlidingMenuEnable(true);
 
 
-        TextView textView = new TextView(mActivity);
-        textView.setText("首页");
-        textView.setTextColor(Color.RED);
-        textView.setTextSize(25);
-        textView.setGravity(Gravity.CENTER);
-
-        flContent.addView(textView);
+//        TextView textView = new TextView(mActivity);
+//        textView.setText("首页");
+//        textView.setTextColor(Color.RED);
+//        textView.setTextSize(25);
+//        textView.setGravity(Gravity.CENTER);
+//
+//        flContent.addView(textView);
 
         getDataFromServer();
     }
@@ -102,6 +99,12 @@ public class NewsCenterPager extends BasePager {
         BaseMenuDetailPager pager = detailPagers.get(position);
         flContent.removeAllViews();
         flContent.addView(pager.myRootView);
+
+        // 设置当前页的标题
+        NewsData.NewsMenuData menuData = myNewsData.data.get(position);
+        tvTitle.setText(menuData.title);
+
+        pager.initData();// 初始化当前页面的数据
     }
 
 }

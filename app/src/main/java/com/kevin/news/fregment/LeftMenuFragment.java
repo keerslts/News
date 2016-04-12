@@ -8,6 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.kevin.news.R;
 import com.kevin.news.activity.MainActivity;
 import com.kevin.news.base.impl.NewsCenterPager;
@@ -27,7 +28,7 @@ public class LeftMenuFragment extends BaseFragment {
     private ListView lvList;
     private ArrayList<NewsMenuData> myMenuList;
     private MenuAdapter menuAdapter;
-    private int myCurrentPositon;
+    private int myCurrentPosition;
 
     @Override
     public View initViews() {
@@ -41,11 +42,18 @@ public class LeftMenuFragment extends BaseFragment {
         lvList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                myCurrentPositon = position;
+                myCurrentPosition = position;
                 menuAdapter.notifyDataSetChanged();
                 setCurrentMenuDetailPager(position);
+                toggleSlidingMenu();
             }
         });
+    }
+
+    private void toggleSlidingMenu() {
+        MainActivity mainUI = (MainActivity)myActivity;
+        SlidingMenu slidingMenu = mainUI.getSlidingMenu();
+        slidingMenu.toggle();
     }
 
     private void setCurrentMenuDetailPager(int position) {
@@ -94,7 +102,7 @@ public class LeftMenuFragment extends BaseFragment {
             NewsMenuData newsMenuData = getItem(position);
             tvTitle.setText(newsMenuData.title);
 
-            if (myCurrentPositon == position) {
+            if (myCurrentPosition == position) {
                 tvTitle.setEnabled(true);
             } else {
                 tvTitle.setEnabled(false);
