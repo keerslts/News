@@ -26,4 +26,5 @@ dependencies {
     compile project(':slidingLlibrary')
     compile project(':xUtilsLibrary')
     compile files('libs/gson-2.3.1.jar')
+    compile project(':viewPagerLibrary')
 }

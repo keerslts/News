@@ -11,6 +11,7 @@ import com.kevin.news.R;
 import com.kevin.news.base.BaseMenuDetailPager;
 import com.kevin.news.base.TabDetailPager;
 import com.kevin.news.bean.NewsData;
+import com.viewpagerindicator.TabPageIndicator;
 
 import java.util.ArrayList;
 
@@ -22,7 +23,7 @@ public class NewsMenuDetailPager extends BaseMenuDetailPager {
     private ArrayList<NewsData.NewsTabData> mNewsTabData;
     private ViewPager mViewPager;
     private ArrayList<TabDetailPager> mPagerList;
-
+    private TabPageIndicator myIndicator;
 
     public NewsMenuDetailPager(Activity activity,
                                ArrayList<NewsData.NewsTabData> children) {
@@ -37,6 +38,8 @@ public class NewsMenuDetailPager extends BaseMenuDetailPager {
                 R.layout.news_menu_detail, null);
         mViewPager = (ViewPager) view.findViewById(R.id.vp_menu_detail);
 
+        myIndicator = (TabPageIndicator)view.findViewById(R.id.indicator);
+
         return view;
     }
 
@@ -49,10 +52,17 @@ public class NewsMenuDetailPager extends BaseMenuDetailPager {
             mPagerList.add(pager);
         }
         mViewPager.setAdapter(new MenuDetailAdapter());
+        myIndicator.setViewPager(mViewPager);
     }
 
-    private class MenuDetailAdapter extends PagerAdapter {
-        @Override
+        private class MenuDetailAdapter extends PagerAdapter {
+
+            @Override
+            public CharSequence getPageTitle(int position) {
+                return mNewsTabData.get(position).title;
+            }
+
+            @Override
         public int getCount() {
             return mPagerList.size();
         }
