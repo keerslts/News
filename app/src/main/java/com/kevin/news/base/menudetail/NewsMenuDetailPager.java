@@ -11,6 +11,8 @@ import com.kevin.news.R;
 import com.kevin.news.base.BaseMenuDetailPager;
 import com.kevin.news.base.TabDetailPager;
 import com.kevin.news.bean.NewsData;
+import com.lidroid.xutils.ViewUtils;
+import com.lidroid.xutils.view.annotation.event.OnClick;
 import com.viewpagerindicator.TabPageIndicator;
 
 import java.util.ArrayList;
@@ -37,8 +39,8 @@ public class NewsMenuDetailPager extends BaseMenuDetailPager {
         View view = View.inflate(myActivity,
                 R.layout.news_menu_detail, null);
         mViewPager = (ViewPager) view.findViewById(R.id.vp_menu_detail);
-
-        myIndicator = (TabPageIndicator)view.findViewById(R.id.indicator);
+        ViewUtils.inject(this, view);
+        myIndicator = (TabPageIndicator) view.findViewById(R.id.indicator);
 
         return view;
     }
@@ -55,14 +57,20 @@ public class NewsMenuDetailPager extends BaseMenuDetailPager {
         myIndicator.setViewPager(mViewPager);
     }
 
-        private class MenuDetailAdapter extends PagerAdapter {
+    @OnClick(R.id.btn_next)
+    public void nextPage(View view) {
+        int currentItem = mViewPager.getCurrentItem();
+        mViewPager.setCurrentItem(++currentItem);
+    }
 
-            @Override
-            public CharSequence getPageTitle(int position) {
-                return mNewsTabData.get(position).title;
-            }
+    private class MenuDetailAdapter extends PagerAdapter {
 
-            @Override
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return mNewsTabData.get(position).title;
+        }
+
+        @Override
         public int getCount() {
             return mPagerList.size();
         }
