@@ -7,7 +7,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 
+import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.kevin.news.R;
+import com.kevin.news.activity.MainActivity;
 import com.kevin.news.base.BaseMenuDetailPager;
 import com.kevin.news.base.TabDetailPager;
 import com.kevin.news.bean.NewsData;
@@ -20,7 +22,8 @@ import java.util.ArrayList;
 /**
  * Created by Kevin on 2016/4/11.
  */
-public class NewsMenuDetailPager extends BaseMenuDetailPager {
+public class NewsMenuDetailPager extends BaseMenuDetailPager implements
+        ViewPager.OnPageChangeListener {
 
     private ArrayList<NewsData.NewsTabData> mNewsTabData;
     private ViewPager mViewPager;
@@ -42,6 +45,8 @@ public class NewsMenuDetailPager extends BaseMenuDetailPager {
         ViewUtils.inject(this, view);
         myIndicator = (TabPageIndicator) view.findViewById(R.id.indicator);
 
+        myIndicator.setOnPageChangeListener(this);
+
         return view;
     }
 
@@ -61,6 +66,30 @@ public class NewsMenuDetailPager extends BaseMenuDetailPager {
     public void nextPage(View view) {
         int currentItem = mViewPager.getCurrentItem();
         mViewPager.setCurrentItem(++currentItem);
+    }
+
+    @Override
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+    }
+
+    @Override
+    public void onPageSelected(int position) {
+
+
+        MainActivity mainUi = (MainActivity) myActivity;
+        SlidingMenu slidingMenu = mainUi.getSlidingMenu();
+
+        if (position == 0) {//只有在第一个页面(北京), 侧边栏才允许出来
+            slidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
+        } else {
+            slidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_NONE);
+        }
+    }
+
+    @Override
+    public void onPageScrollStateChanged(int state) {
+
     }
 
     private class MenuDetailAdapter extends PagerAdapter {
