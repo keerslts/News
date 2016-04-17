@@ -35,7 +35,12 @@ public class TabData {
 
         @Override
         public String toString() {
-            return "TabNewsData{" + "title='" + title + '\'' + '}';
+            return "TabNewsData{" +
+                    "id='" + id + '\'' +
+                    ", listimage='" + listimage + '\'' +
+                    ", pubdate='" + pubdate + '\'' +
+                    ", title='" + title + '\'' +
+                    '}';
         }
     }
     public class TopNewsData{
