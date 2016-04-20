@@ -114,6 +114,7 @@ public class ContentFragment extends BaseFragment {
 
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
+
             BasePager pager = myPagerList.get(position);
             container.addView(pager.myRootView);
             //  pager.initData();  会加载下一个view

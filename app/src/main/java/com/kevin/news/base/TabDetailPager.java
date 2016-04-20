@@ -9,6 +9,7 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -26,6 +27,7 @@ import com.kevin.news.activity.NewsDetailActivity;
 import com.kevin.news.bean.NewsData.NewsTabData;
 import com.kevin.news.bean.TabData;
 import com.kevin.news.global.GlobalContents;
+import com.kevin.news.utils.CacheUtils;
 import com.kevin.news.utils.PrefUtils;
 import com.kevin.news.view.RefreshListView;
 import com.kevin.news.view.TopNewsViewPager;
@@ -52,6 +54,7 @@ public class TabDetailPager extends BaseMenuDetailPager implements ViewPager.OnP
     private TabData mTabDetailData;
     private ArrayList<TabData.TopNewsData> mTopNewsList;
     private NewsAdapter mNewsAdapter;
+    private TopNewsAdapter topNewsAdapter;
 
     @ViewInject(R.id.lv_news_list)
     private RefreshListView listView;
@@ -120,7 +123,7 @@ public class TabDetailPager extends BaseMenuDetailPager implements ViewPager.OnP
                     PrefUtils.setString(myActivity, "read_ids", ids);
                 }
 
-               // mNewsAdapter.notifyDataSetChanged();
+                // mNewsAdapter.notifyDataSetChanged();
                 changeReadState(view);// 实现局部界面刷新, 这个view就是被点击的item布局对象
 
                 // 跳转新闻详情页
@@ -142,11 +145,11 @@ public class TabDetailPager extends BaseMenuDetailPager implements ViewPager.OnP
 
     @Override
     public void initData() {
-        //  String cache = CacheUtils.getCache(myUrl, myActivity);
+        String cache = CacheUtils.getCache(myUrl, myActivity);
 
-//        if (!TextUtils.isEmpty(cache)) {
-//            parseData(cache, false);
-//        }
+        if (!TextUtils.isEmpty(cache)) {
+            parseData(cache, false);
+        }
 
         getDataFromServer();
     }
@@ -162,6 +165,9 @@ public class TabDetailPager extends BaseMenuDetailPager implements ViewPager.OnP
                 Log.i("news", myUrl);
                 parseData(result, false);
                 listView.onRefreshComplete(true);
+
+                // 设置缓存
+                CacheUtils.setCache(myUrl, result, myActivity);
             }
 
             @Override
@@ -181,7 +187,7 @@ public class TabDetailPager extends BaseMenuDetailPager implements ViewPager.OnP
 
             @Override
             public void onSuccess(ResponseInfo<String> responseInfo) {
-                String result = (String) responseInfo.result;
+                String result = responseInfo.result;
 
                 parseData(result, true);
 
@@ -218,12 +224,16 @@ public class TabDetailPager extends BaseMenuDetailPager implements ViewPager.OnP
 
 
             if (mTopNewsList != null) {
-                mViewPager.setAdapter(new TopNewsAdapter());
+                //mViewPager.setAdapter(new TopNewsAdapter());
+                topNewsAdapter = new TopNewsAdapter();
+                mViewPager.setAdapter(topNewsAdapter);
+
                 //mViewPager.addOnPageChangeListener(this);
                 mIndicator.setViewPager(mViewPager);
-                //mIndicator.setSnap(true);  快照
+                mIndicator.setSnap(true);  //快照
                 mIndicator.setOnPageChangeListener(this);
                 mIndicator.onPageSelected(0);// 让指示器重新定位到第一个点
+                Log.i("news", "0 " + mTopNewsList.size());
                 tvTitle.setText(mTopNewsList.get(0).title);
             }
 
@@ -245,6 +255,7 @@ public class TabDetailPager extends BaseMenuDetailPager implements ViewPager.OnP
                         }
 
                         mViewPager.setCurrentItem(currentItem);// 切换到下一个页面
+                        Log.i("news", "1 " + mTopNewsList.size()+" "+currentItem);
                         mHandler.sendEmptyMessageDelayed(0, 3000);// 继续延时3秒发消息,
                         // 形成循环
                     }
@@ -258,7 +269,9 @@ public class TabDetailPager extends BaseMenuDetailPager implements ViewPager.OnP
         } else {// 如果是加载下一页,需要将数据追加给原来的集合
             ArrayList<TabData.TabNewsData> news = mTabDetailData.data.news;
             mNewsList.addAll(news);
+            topNewsAdapter.notifyDataSetChanged();
             mNewsAdapter.notifyDataSetChanged();
+
         }
 
     }
@@ -334,6 +347,13 @@ public class TabDetailPager extends BaseMenuDetailPager implements ViewPager.OnP
 
             utils.display(holder.ivPic, item.listimage);
 
+            String ids = PrefUtils.getString(myActivity, "read_ids", "");
+            if (ids.contains(getItem(position).id)) {
+                holder.tvTitle.setTextColor(Color.GRAY);
+            } else {
+                holder.tvTitle.setTextColor(Color.BLACK);
+            }
+
             return convertView;
         }
     }
@@ -365,15 +385,16 @@ public class TabDetailPager extends BaseMenuDetailPager implements ViewPager.OnP
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
 
+           // mViewPager.setOffscreenPageLimit(1);
             ImageView image = new ImageView(myActivity);
-            //  image.setImageResource(R.mipmap.topnews_item_default);// 设置默认图片
+            //image.setImageResource(R.mipmap.topnews_item_default);// 设置默认图片
 
             image.setScaleType(ImageView.ScaleType.FIT_XY);
             TabData.TopNewsData topNewsData = mTopNewsList.get(position);
             utils.display(image, topNewsData.topimage);// 传递imagView对象和图片地址
 
             container.addView(image);
-
+            image.setOnTouchListener(new TopNewsTouchListener());
             return image;
         }
 
@@ -382,5 +403,45 @@ public class TabDetailPager extends BaseMenuDetailPager implements ViewPager.OnP
             container.removeView((View) object);
         }
     }
+    /**
+     * 新闻列表的适配器
+     *
+     * @author Kevin
+     *
+     */
+    class TopNewsTouchListener implements View.OnTouchListener {
+
+        @Override
+        public boolean onTouch(View v, MotionEvent event) {
+            switch (event.getAction()) {
+                case MotionEvent.ACTION_DOWN:
+                    System.out.println("按下");
+                    mHandler.removeCallbacksAndMessages(null);// 删除Handler中的所有消息
+                    // mHandler.postDelayed(new Runnable() {
+                    //
+                    // @Override
+                    // public void run() {
+                    //
+                    // }
+                    // }, 3000);
+                    break;
+                case MotionEvent.ACTION_CANCEL:
+                    System.out.println("事件取消");
+                    mHandler.sendEmptyMessageDelayed(0, 3000);
+                    break;
+                case MotionEvent.ACTION_UP:
+                    System.out.println("抬起");
+                    mHandler.sendEmptyMessageDelayed(0, 3000);
+                    break;
+
+                default:
+                    break;
+            }
+
+            return true;
+        }
+
+    }
+
 
 }
