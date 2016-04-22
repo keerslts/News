@@ -19,6 +19,7 @@ import com.kevin.news.base.BaseMenuDetailPager;
 import com.kevin.news.bean.PhotosData;
 import com.kevin.news.global.GlobalContents;
 import com.kevin.news.utils.CacheUtils;
+import com.kevin.news.utils.bitmap.MyBitmapUtils;
 import com.lidroid.xutils.BitmapUtils;
 import com.lidroid.xutils.HttpUtils;
 import com.lidroid.xutils.exception.HttpException;
@@ -115,11 +116,14 @@ public class PhotoMenuDetailPager extends BaseMenuDetailPager {
 
     class PhotoAdapter extends BaseAdapter {
 
-        private BitmapUtils utils;
+      //  private BitmapUtils utils;
+        private MyBitmapUtils utils;
 
         public PhotoAdapter() {
-            utils = new BitmapUtils(myActivity);
-            utils.configDefaultLoadingImage(R.mipmap.news_pic_default);
+//            utils = new BitmapUtils(myActivity);
+//            utils.configDefaultLoadingImage(R.mipmap.news_pic_default);
+
+            utils = new MyBitmapUtils();
         }
 
         @Override
